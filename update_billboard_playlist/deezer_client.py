@@ -48,6 +48,11 @@ class DeezerClient:
             params["access_token"] = self.token
         return json.loads(requests.get(url, params).text)
 
-    def search_track(self, track):
+    def search_track(self, track=None, artist=None):
         """Return search results for a given track name."""
-        return self.request("search", q='track:"{}"'.format(track))["data"]
+        q = ""
+        if track is not None:
+            q += f'track:"{track}"'
+        if artist is not None:
+            q += f' artist:"{artist}"'
+        return self.request("search", q=q)["data"]
